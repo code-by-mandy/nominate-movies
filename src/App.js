@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState} from 'react';
+import Search from './Search';
+import Results from './Results';
+import Nominees from './Nominees';
 
 function App() {
+  let searchInput = "";
+
+  const [resultsArray, setResultsArray] = useState([]);
+
+  const getMovies = (searchString) => {
+    const url = new URL(`http://www.omdbapi.com/`);
+    url.search = new URLSearchParams({
+      apikey: "defd63df",
+      s: searchString
+    });
+    fetch(url)
+      .then(results => {
+        return results.json();
+      }).then(data => {
+        setResultsArray(data.Search);
+      })
+  }
+
+  getMovies("guardian");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Nominate Movies!</h1>
+      <p>Nominate up to five movies for the Amazing Damazing Movie Award!</p>
+      <Search />
+      <div className="nomination">
+          <Results />
+          <Nominees />
+      </div>
     </div>
   );
 }
