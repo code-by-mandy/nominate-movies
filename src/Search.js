@@ -1,8 +1,19 @@
-const Search = () => {
+const Search = ({getSearchString, searched}) => {
+ 
     return (
-        <>
-            <label>Search bar</label>
-        </>
+
+        //get input from dom
+        //put return in parameter input
+        //pass back to parent
+
+        
+        <div>
+            <form onSubmit={(e) => searched(e)}>
+                <label htmlFor="search">Search</label>
+                <input type="search" id="search" onChange = {(e) => getSearchString(e.target.value)}></input>
+                <button>Submit</button>
+            </form>
+        </div>
     )
 }
 
