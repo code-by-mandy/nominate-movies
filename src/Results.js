@@ -1,8 +1,19 @@
-const Results = () => {
+const Results = ({resultsArray}) => {
+
     return (
         <>
             <ul>
-                <li>Results</li>
+                {resultsArray.map( 
+                    (movie) => {
+                        return (
+                        <li key={movie.imdbID}>
+                            <p>{movie.Title}</p>
+                            <p>{movie.Year}</p>
+                            <button>Nominate</button>
+                        </li>
+                        )
+                    }
+                )}
             </ul>
         </>
     )

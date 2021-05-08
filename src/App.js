@@ -1,10 +1,11 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Search from './Search';
 import Results from './Results';
 import Nominees from './Nominees';
 
 function App() {
-  let searchInput = "";
+  
+  //get movies from API
 
   const [resultsArray, setResultsArray] = useState([]);
 
@@ -22,7 +23,10 @@ function App() {
       })
   }
 
-  getMovies("guardian");
+  useEffect (() => {
+    getMovies("guardian");
+  }, [])
+  
 
   return (
     <div>
@@ -30,7 +34,7 @@ function App() {
       <p>Nominate up to five movies for the Amazing Damazing Movie Award!</p>
       <Search />
       <div className="nomination">
-          <Results />
+          <Results resultsArray = {resultsArray}/>
           <Nominees />
       </div>
     </div>
