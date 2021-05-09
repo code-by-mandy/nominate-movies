@@ -1,6 +1,5 @@
 const Results = ({resultsArray, nominate}) => {
 
-
     return (
         <div>  
             <h3>Search Results</h3>
@@ -11,7 +10,7 @@ const Results = ({resultsArray, nominate}) => {
                         <li key={movie.imdbID}>
                             <p>{movie.Title}</p>
                             <p>{movie.Year}</p>
-                            <button onClick={() => nominate(movie)}>Nominate</button>
+                            <button onClick={(e) => nominate(e, movie)}>Nominate</button>
                         </li>
                         )
                     }

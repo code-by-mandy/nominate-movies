@@ -9,7 +9,7 @@ const Nominees = ({nominees, remove}) => {
                         <li key={movie.imdbID}>
                             <p>{movie.Title}</p>
                             <p>{movie.Year}</p>
-                            <button onClick={() => remove(movie)}>Remove</button>
+                            <button onClick={(e) => remove(e,movie)}>Remove</button>
                         </li>
                         )
                     }

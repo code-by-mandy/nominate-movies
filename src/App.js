@@ -5,8 +5,7 @@ import Nominees from './Nominees';
 
 function App() {
   
-  //get search string 
-
+  //states for search string and whether search form has been submitted 
   const [searchString, setSearchString] = useState("");
   const [newSearch, setNewSearch] = useState(false);
 
@@ -17,7 +16,6 @@ function App() {
   }
   
   //get movies from API
-
   const [resultsArray, setResultsArray] = useState([]);
 
   const getMovies = (searchparam) => {
@@ -40,31 +38,31 @@ function App() {
     setNewSearch(false);
   }
 
-  //on click, nominate movie
+  //on click, nominate or remove movie
   const [nominees, setNominees] = useState([]);
 
-  const nominate = nomineeObj => {
+  //nominate movie
+  const nominate = (e, nomineeObj) => {
+
+    //add nominated movie to nominee array
     const updatedNominees = [...nominees];
-    // const updatedNominees = []
-   
-    // // check if movie is already there
-    // oldNominees.map(movie => {
-    //   if (movie !== nomineeObj) {
-    //     updatedNominees.push(movie);
-    //     return(
-    //      updatedNominees
-    //     )
-    //   }
-    // })
     updatedNominees.push(nomineeObj);
     setNominees(updatedNominees);
+
+    //disable nominate button
+    e.target.disabled = true;
   }
 
-  // onclick, remove movie
-  const remove = removeMovie => {
+  //remove movie
+
+  const remove = (e, removeMovie) => {
+
+    //remove clicked movie from nominee array
     const oldNominees = [...nominees];
     const updatedNominees = oldNominees.filter(filteredMovie => filteredMovie !== removeMovie)
     setNominees(updatedNominees);
+
+    //enable nominate button
   }
 
 
