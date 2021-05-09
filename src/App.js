@@ -24,7 +24,7 @@ function App() {
       const url = new URL(`http://www.omdbapi.com/`);
       url.search = new URLSearchParams({
         apikey: "defd63df",
-        s: searchparam
+        s: searchparam,
       });
       fetch(url)
         .then(results => {
@@ -40,15 +40,24 @@ function App() {
     setNewSearch(false);
   }
 
+  //on click, nominate movie
+  const [nominees, setNominees] = useState([]);
+
+  const nominate = nomineeObj => {
+    const updatedNominees = [...nominees];
+    updatedNominees.push(nomineeObj);
+    setNominees(updatedNominees);
+  }
+
 
   return (
     <div>
       <h1>Nominate Movies!</h1>
       <p>Nominate up to five movies for the Amazing Damazing Movie Award!</p>
-      <Search getSearchString = {(searchInput) => setSearchString(searchInput)} searched = {searched}/>
+      <Search getSearchString = {(searchInput) => setSearchString(searchInput)} resetSearch = {searched}/>
       <div className="nomination">
-          <Results resultsArray = {resultsArray}/>
-          <Nominees />
+          <Results resultsArray = {resultsArray} nominate={nominate}/>
+          <Nominees nominees={nominees}/>
       </div>
     </div>
   );

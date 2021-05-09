@@ -1,7 +1,9 @@
-const Results = ({resultsArray}) => {
+const Results = ({resultsArray, nominate}) => {
+
 
     return (
-        <>
+        <div>  
+            <h3>Search Results</h3>
             <ul>
                 {resultsArray.map( 
                     (movie) => {
@@ -9,13 +11,13 @@ const Results = ({resultsArray}) => {
                         <li key={movie.imdbID}>
                             <p>{movie.Title}</p>
                             <p>{movie.Year}</p>
-                            <button>Nominate</button>
+                            <button onClick={() => nominate(movie)}>Nominate</button>
                         </li>
                         )
                     }
                 )}
             </ul>
-        </>
+        </div>
     )
 }
 

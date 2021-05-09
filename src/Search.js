@@ -1,14 +1,12 @@
-const Search = ({getSearchString, searched}) => {
+const Search = ({getSearchString, resetSearch}) => {
  
     return (
 
-        //get input from dom
-        //put return in parameter input
-        //pass back to parent
+        //error catching - if search results nothing
 
         
         <div>
-            <form onSubmit={(e) => searched(e)}>
+            <form onSubmit={(e) => resetSearch(e)}>
                 <label htmlFor="search">Search</label>
                 <input type="search" id="search" onChange = {(e) => getSearchString(e.target.value)}></input>
                 <button>Submit</button>
