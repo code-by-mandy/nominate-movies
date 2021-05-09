@@ -45,7 +45,25 @@ function App() {
 
   const nominate = nomineeObj => {
     const updatedNominees = [...nominees];
+    // const updatedNominees = []
+   
+    // // check if movie is already there
+    // oldNominees.map(movie => {
+    //   if (movie !== nomineeObj) {
+    //     updatedNominees.push(movie);
+    //     return(
+    //      updatedNominees
+    //     )
+    //   }
+    // })
     updatedNominees.push(nomineeObj);
+    setNominees(updatedNominees);
+  }
+
+  // onclick, remove movie
+  const remove = removeMovie => {
+    const oldNominees = [...nominees];
+    const updatedNominees = oldNominees.filter(filteredMovie => filteredMovie !== removeMovie)
     setNominees(updatedNominees);
   }
 
@@ -57,7 +75,7 @@ function App() {
       <Search getSearchString = {(searchInput) => setSearchString(searchInput)} resetSearch = {searched}/>
       <div className="nomination">
           <Results resultsArray = {resultsArray} nominate={nominate}/>
-          <Nominees nominees={nominees}/>
+          <Nominees nominees={nominees} remove={remove}/>
       </div>
     </div>
   );
