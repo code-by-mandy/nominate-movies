@@ -52,7 +52,6 @@ function App() {
 
   //on click, nominate or remove movie
   const [nominees, setNominees] = useState([]);
-  // const [inConsideration, setInConsideration] = useState([]);
 
   //nominate movie
   const nominate = (nomineeObj) => {
@@ -63,9 +62,7 @@ function App() {
     setNominees(updatedNominees);
     
     //toggle nominate button disable attribute
-    const resultsCopy = [...results];
-    nomineeObj.disabled=true;
-    setResults(resultsCopy);
+    setNewSearch(true);
   }
 
   //remove movie
@@ -77,10 +74,9 @@ function App() {
     setNominees(updatedNominees);
 
     //toggle nominate button disable attribute
-    const resultsCopy = [...results];
-    removeMovie.disabled=false;
-    setResults(resultsCopy);
+    setNewSearch(true);
   }
+
    //if newSearch state is true (if search form was submitted), call getMovies with searchString value and reset newState to false.
    if (newSearch) {
     getMovies(searchString);
