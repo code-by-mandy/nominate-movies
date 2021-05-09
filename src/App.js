@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import ReactModal from "react-modal";
+import {useState, useEffect} from 'react';
 import Search from './Search';
 import List from './List';
 
@@ -45,7 +46,7 @@ function App() {
           item.nominated = true;
         } 
       })
-      if (item.nominated) {
+      if (item.nominated || nominees.length === 5) {
         item.disabled=true;
       } else {
         item.disabled=false;
@@ -110,6 +111,20 @@ function App() {
     return uniqueArray;
   } 
 
+  //pop up if nominees reach five
+  const [showModal, setShowModal] = useState(false);
+  const [closeModal, setCloseModal] = useState(false);
+
+  useEffect (() => {
+    if (nominees.length === 5 && !closeModal) {
+      setShowModal(true);
+    } else if (nominees.length === 5 && closeModal) {
+      setShowModal(false);
+    }
+  })
+  
+  ReactModal.setAppElement('#root');
+
   return (
     <div>
       <h1>Nominate Movies!</h1>
@@ -122,7 +137,7 @@ function App() {
           <div className="searchResults">
             {
               !searchString ?
-              <h2>Search for a movie</h2>
+              <h2>Search for a movie you'd like to nominate!</h2>
               :
               errorMsg ?
               <h2>Hmmm.. looks like your search had no results. Try searching a different movie title!</h2> :
@@ -148,9 +163,13 @@ function App() {
           <div className="nominees">
             
             {
-              nominees.length >= 1 ?
-              <h2>You've nominated:</h2> :
-              <h2>Nominate a movie</h2>
+              (errorMsg || !searchString) && nominees.length < 1 ?
+              null :
+              nominees.length === 1 ?
+              <h2>You've nominated {nominees.length} movie:</h2> :
+              nominees.length > 1 ?
+              <h2>You've nominated {nominees.length} movies:</h2> :
+              <h2>You've nominated 0 movies</h2>
             }
             
             <ul>
@@ -167,6 +186,20 @@ function App() {
                   }
               )}
             </ul>
+
+              <ReactModal
+                isOpen={showModal}
+                aria={{
+                  labelledby: "heading",
+                  describedby: "full_description"
+                }}
+                onRequestClose={() => setCloseModal(true)}
+              >
+              <h1 id="heading">You've reached five nominees!</h1>
+              <p>To keep nominating, you'll have to remove at least one movie from your nominations list.</p>
+              <button onClick={() => setCloseModal(true)}>Close</button>
+            </ReactModal> 
+            
           </div>
       </div>
     </div>
