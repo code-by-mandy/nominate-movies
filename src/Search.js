@@ -7,9 +7,9 @@ const Search = ({getSearchString, resetSearch}) => {
         
         <div>
             <form onSubmit={(e) => resetSearch(e)}>
-                <label htmlFor="search">Search</label>
+                <label htmlFor="search">Movie title</label>
                 <input type="search" id="search" onChange = {(e) => getSearchString(e.target.value)}></input>
-                <button>Submit</button>
+                <button>Search</button>
             </form>
         </div>
     )

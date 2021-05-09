@@ -1,7 +1,6 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import Search from './Search';
-import Results from './Results';
-import Nominees from './Nominees';
+import List from './List';
 
 function App() {
   
@@ -18,11 +17,11 @@ function App() {
   //get movies from API
   const [resultsArray, setResultsArray] = useState([]);
 
-  const getMovies = (searchparam) => {
+  const getMovies = (searchInput) => {
       const url = new URL(`http://www.omdbapi.com/`);
       url.search = new URLSearchParams({
         apikey: "defd63df",
-        s: searchparam,
+        s: searchInput,
       });
       fetch(url)
         .then(results => {
@@ -40,31 +39,35 @@ function App() {
 
   //on click, nominate or remove movie
   const [nominees, setNominees] = useState([]);
+  // const [inConsideration, setInConsideration] = useState([]);
 
   //nominate movie
-  const nominate = (e, nomineeObj) => {
+  const nominate = (nomineeObj) => {
 
     //add nominated movie to nominee array
     const updatedNominees = [...nominees];
     updatedNominees.push(nomineeObj);
     setNominees(updatedNominees);
-
-    //disable nominate button
-    e.target.disabled = true;
+    
+    //toggle nominate button disable attribute
+    const resultsArrayCopy = [...resultsArray];
+    nomineeObj.disabled=true;
+    setResultsArray(resultsArrayCopy);
   }
 
   //remove movie
-
-  const remove = (e, removeMovie) => {
+  const remove = (removeMovie) => {
 
     //remove clicked movie from nominee array
     const oldNominees = [...nominees];
-    const updatedNominees = oldNominees.filter(filteredMovie => filteredMovie !== removeMovie)
+    const updatedNominees = oldNominees.filter(filteredMovie => filteredMovie !== removeMovie);
     setNominees(updatedNominees);
 
-    //enable nominate button
+    //toggle nominate button disable attribute
+    const resultsArrayCopy = [...resultsArray];
+    removeMovie.disabled=false;
+    setResultsArray(resultsArrayCopy);
   }
-
 
   return (
     <div>
@@ -72,8 +75,42 @@ function App() {
       <p>Nominate up to five movies for the Amazing Damazing Movie Award!</p>
       <Search getSearchString = {(searchInput) => setSearchString(searchInput)} resetSearch = {searched}/>
       <div className="nomination">
-          <Results resultsArray = {resultsArray} nominate={nominate}/>
-          <Nominees nominees={nominees} remove={remove}/>
+          <div className="searchResults">
+            <h2>Search results for "{searchString}"</h2>
+            <ul>
+                {resultsArray.map(  
+                  (movie) => {
+                        return (
+                        <List 
+                          key={`${movie.imdbID}`} 
+                          movie = {movie} 
+                          nominate={nominate} 
+                          button={'Nominate'}
+                          disabled={movie.disabled}
+                          />
+                        )
+                    }
+                )}
+              </ul>
+          </div>
+          <div className="nominees">
+            <h2>Nominees</h2>
+            <ul>
+              {nominees.map( 
+                (movie) => {
+                    return (
+                      <List 
+                        key={`nominee${movie.imdbID}`} 
+                        movie = {movie} 
+                        nominate={remove} 
+                        button={'Remove'}
+                        disabled={false}
+                        />
+                    )
+                  }
+              )}
+            </ul>
+          </div>
       </div>
     </div>
   );
