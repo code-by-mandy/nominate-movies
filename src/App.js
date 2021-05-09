@@ -17,6 +17,21 @@ function App() {
   //get movies from API
   const [results, setResults] = useState([]);
 
+  const getUnique = (array) => {
+    const movieIDs = []
+    array.forEach (item => {
+      movieIDs.push(item.imdbID)
+    })          
+    
+    const duplicateID = movieIDs.filter((item, index) => movieIDs.indexOf(item) !== index);
+    
+    const duplicateIDIndex = movieIDs.indexOf(duplicateID[0]);
+
+    const uniqueArray = array.filter(movie => array.indexOf(movie) !== duplicateIDIndex);
+
+    return uniqueArray;
+  }
+
   const getMovies = (searchInput) => {
       const url = new URL(`http://www.omdbapi.com/`);
       url.search = new URLSearchParams({
@@ -28,7 +43,7 @@ function App() {
           return results.json();
         }).then(data => {
           const resultsRaw = data.Search;
-          moviesButtonProp(resultsRaw)
+          moviesButtonProp(getUnique(resultsRaw));
         })
   }
 
