@@ -15,7 +15,7 @@ function App() {
   }
   
   //get movies from API
-  const [resultsArray, setResultsArray] = useState([]);
+  const [results, setResults] = useState([]);
 
   const getMovies = (searchInput) => {
       const url = new URL(`http://www.omdbapi.com/`);
@@ -27,14 +27,27 @@ function App() {
         .then(results => {
           return results.json();
         }).then(data => {
-          setResultsArray(data.Search);
+          const resultsRaw = data.Search;
+          moviesButtonProp(resultsRaw)
         })
   }
 
-  //if newSearch state is true (if search form was submitted), call getMovies with searchString value and reset newState to false.
-  if (newSearch) {
-    getMovies(searchString);
-    setNewSearch(false);
+  const moviesButtonProp = (array) => {
+    const nomineeArray = [...nominees];
+    array.forEach(item => {
+      item.nominated = false;
+      nomineeArray.forEach(nominated => {
+        if ((item.Title === nominated.Title) && (item.Year === nominated.Year)) {
+          item.nominated = true;
+        } 
+      })
+      if (item.nominated) {
+        item.disabled=true;
+      } else {
+        item.disabled=false;
+      }
+    });
+    setResults(array);
   }
 
   //on click, nominate or remove movie
@@ -50,9 +63,9 @@ function App() {
     setNominees(updatedNominees);
     
     //toggle nominate button disable attribute
-    const resultsArrayCopy = [...resultsArray];
+    const resultsCopy = [...results];
     nomineeObj.disabled=true;
-    setResultsArray(resultsArrayCopy);
+    setResults(resultsCopy);
   }
 
   //remove movie
@@ -64,10 +77,15 @@ function App() {
     setNominees(updatedNominees);
 
     //toggle nominate button disable attribute
-    const resultsArrayCopy = [...resultsArray];
+    const resultsCopy = [...results];
     removeMovie.disabled=false;
-    setResultsArray(resultsArrayCopy);
+    setResults(resultsCopy);
   }
+   //if newSearch state is true (if search form was submitted), call getMovies with searchString value and reset newState to false.
+   if (newSearch) {
+    getMovies(searchString);
+    setNewSearch(false);
+   }
 
   return (
     <div>
@@ -78,7 +96,7 @@ function App() {
           <div className="searchResults">
             <h2>Search results for "{searchString}"</h2>
             <ul>
-                {resultsArray.map(  
+                {results.map(  
                   (movie) => {
                         return (
                         <List 
