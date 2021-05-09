@@ -121,7 +121,7 @@ function App() {
     } else if (nominees.length === 5 && closeModal) {
       setShowModal(false);
     }
-  })
+  }, [nominees, closeModal])
   
   ReactModal.setAppElement('#root');
 
