@@ -1,9 +1,6 @@
 const Search = ({getSearchString, resetSearch}) => {
  
     return (
-
-        //error catching - if search results nothing
-
         
         <div>
             <form onSubmit={(e) => resetSearch(e)}>

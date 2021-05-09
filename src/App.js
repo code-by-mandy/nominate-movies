@@ -13,15 +13,17 @@ function App() {
     e.preventDefault();
     setNewSearch(true);
   }
-  
+
   //get movies from API
   const [results, setResults] = useState([]);
+  const [errorMsg, setErrorMsg] = useState(false);
 
   const getMovies = (searchInput) => {
       const url = new URL(`http://www.omdbapi.com/`);
       url.search = new URLSearchParams({
         apikey: "defd63df",
         s: searchInput,
+        type: "movie",
       });
       fetch(url)
         .then(results => {
@@ -29,6 +31,8 @@ function App() {
         }).then(data => {
           const resultsRaw = data.Search;
           moviesButtonProp(getUnique(resultsRaw));
+        }).catch(error => {
+          setErrorMsg(true);
         })
   }
 
@@ -48,6 +52,7 @@ function App() {
       }
     });
     setResults(array);
+    setErrorMsg(false);
   }
 
   //on click, nominate or remove movie
@@ -75,15 +80,13 @@ function App() {
 
     //update results array via new search so movie.display values are refreshed
     setNewSearch(true);
-  }
+  } 
 
    //if newSearch state is true (if search form was submitted), call getMovies with searchString value and reset newState to false.
    if (newSearch) {
     getMovies(searchString);
     setNewSearch(false);
    }
-
-   
 
   //helper function to filter for unique API results; array passed is directly from api results
   const getUnique = (array) => {
@@ -111,10 +114,21 @@ function App() {
     <div>
       <h1>Nominate Movies!</h1>
       <p>Nominate up to five movies for the Amazing Damazing Movie Award!</p>
-      <Search getSearchString = {(searchInput) => setSearchString(searchInput)} resetSearch = {searched}/>
+      <Search 
+        getSearchString = {(searchInput) => setSearchString(searchInput)} 
+        resetSearch = {searched}
+      />
       <div className="nomination">
           <div className="searchResults">
-            <h2>Search results for "{searchString}"</h2>
+            {
+              !searchString ?
+              <h2>Search for a movie</h2>
+              :
+              errorMsg ?
+              <h2>Hmmm.. looks like your search had no results. Try searching a different movie title!</h2> :
+              <h2>Search results for "{searchString}"</h2>
+            }
+            
             <ul>
                 {results.map(  
                   (movie) => {
@@ -132,7 +146,13 @@ function App() {
               </ul>
           </div>
           <div className="nominees">
-            <h2>Nominees</h2>
+            
+            {
+              nominees.length >= 1 ?
+              <h2>You've nominated:</h2> :
+              <h2>Nominate a movie</h2>
+            }
+            
             <ul>
               {nominees.map( 
                 (movie) => {
