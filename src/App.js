@@ -17,21 +17,6 @@ function App() {
   //get movies from API
   const [results, setResults] = useState([]);
 
-  const getUnique = (array) => {
-    const movieIDs = []
-    array.forEach (item => {
-      movieIDs.push(item.imdbID)
-    })          
-    
-    const duplicateID = movieIDs.filter((item, index) => movieIDs.indexOf(item) !== index);
-    
-    const duplicateIDIndex = movieIDs.indexOf(duplicateID[0]);
-
-    const uniqueArray = array.filter(movie => array.indexOf(movie) !== duplicateIDIndex);
-
-    return uniqueArray;
-  }
-
   const getMovies = (searchInput) => {
       const url = new URL(`http://www.omdbapi.com/`);
       url.search = new URLSearchParams({
@@ -76,7 +61,7 @@ function App() {
     updatedNominees.push(nomineeObj);
     setNominees(updatedNominees);
     
-    //toggle nominate button disable attribute
+    //update results array via new search so movie.display values are refreshed
     setNewSearch(true);
   }
 
@@ -88,7 +73,7 @@ function App() {
     const updatedNominees = oldNominees.filter(filteredMovie => filteredMovie !== removeMovie);
     setNominees(updatedNominees);
 
-    //toggle nominate button disable attribute
+    //update results array via new search so movie.display values are refreshed
     setNewSearch(true);
   }
 
@@ -97,6 +82,30 @@ function App() {
     getMovies(searchString);
     setNewSearch(false);
    }
+
+   
+
+  //helper function to filter for unique API results; array passed is directly from api results
+  const getUnique = (array) => {
+
+    //create movieIDs array of imdbID values of each object returned from API search
+    const movieIDs = []
+    array.forEach (item => {
+      movieIDs.push(item.imdbID)
+    })          
+    
+    //get duplicate value in movieIDs array
+    const duplicateID = movieIDs.filter((movie, index) => movieIDs.indexOf(movie) !== index);
+
+    //get index of duplicate value in movieIDs array
+    const duplicateIDIndex = movieIDs.indexOf(duplicateID[0]);
+
+    //filter out object with same index in api results array
+    const uniqueArray = array.filter(movie => array.indexOf(movie) !== duplicateIDIndex);
+
+    //return filtered array with unique objects
+    return uniqueArray;
+  } 
 
   return (
     <div>
@@ -133,7 +142,6 @@ function App() {
                         movie = {movie} 
                         nominate={remove} 
                         button={'Remove'}
-                        disabled={false}
                         />
                     )
                   }
