@@ -11,7 +11,7 @@ const Search = ({getSearchString, resetSearch}) => {
         <div>
             <form onSubmit={handleSubmit} name="search">
                 <div className="inputBox">
-                    <label htmlFor="search" name="search">Movie Name</label>
+                    <label htmlFor="search" name="search">Movie Title</label>
                     <input type="search" id="search"  name="search" placeholder="E.g. The Lion King" onChange = {e => inputString = e.target.value}></input>
                 </div>                
                 <div className="buttonBox">

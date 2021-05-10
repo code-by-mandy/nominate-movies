@@ -1,7 +1,7 @@
 import ReactModal from "react-modal";
 import {useState, useEffect} from 'react';
-import Search from './Components/Search';
-import List from './Components/List';
+import Search from './components/Search';
+import List from './components/List';
 
 function App() {
 
@@ -21,10 +21,11 @@ function App() {
     setNewSearch(true);
   }
 
-  //get movies from API
+  //state for storing movie results from API and boolean state for any API errors
   const [results, setResults] = useState([]);
   const [errorMsg, setErrorMsg] = useState(false);
 
+  //api call
   const getMovies = (searchInput) => {
       const url = new URL(`https://www.omdbapi.com/`);
       url.search = new URLSearchParams({
@@ -43,6 +44,7 @@ function App() {
         })
   }
 
+  //helper function for toggling button disabled attribute per nomination
   const moviesButtonProp = (array) => {
     const nomineeArray = [...nominees];
     array.forEach(item => {
@@ -62,7 +64,7 @@ function App() {
     setErrorMsg(false);
   }
 
-  //on click, nominate or remove movie
+  //state for storing nominated movies
   const [nominees, setNominees] = useState([]);
 
   //nominate movie
@@ -98,22 +100,14 @@ function App() {
   //helper function to filter for unique API results; array passed is directly from api results
   const getUnique = (array) => {
 
-    //create movieIDs array of imdbID values of each object returned from API search
     const movieIDs = []
     array.forEach (item => {
       movieIDs.push(item.imdbID)
     })          
     
-    //get duplicate value in movieIDs array
     const duplicateID = movieIDs.filter((movie, index) => movieIDs.indexOf(movie) !== index);
-
-    //get index of duplicate value in movieIDs array
     const duplicateIDIndex = movieIDs.indexOf(duplicateID[0]);
-
-    //filter out object with same index in api results array
     const uniqueArray = array.filter(movie => array.indexOf(movie) !== duplicateIDIndex);
-
-    //return filtered array with unique objects
     return uniqueArray;
   } 
 
@@ -215,7 +209,7 @@ function App() {
                   }
               )}
             </ul>
-
+            {/* Pop-up when number of nominees reach five */}
             <ReactModal
               isOpen={showModal}
               contentLabel={"Thank you modal"}
@@ -231,7 +225,8 @@ function App() {
         </div>
       </main>
       <footer>
-        <p>Created by Mandy Poon for Shopify's UX Developer Intern Challenge, Fall 2021</p>
+        <p>Created by Mandy Poon &#169; 2021</p>
+        <p><a href="https://github.com/code-by-mandy/nominate-movies">Github repository</a></p>
       </footer>
     </div>
   );

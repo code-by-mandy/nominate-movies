@@ -1,3 +1,5 @@
+/*general*/
+
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
 body {
@@ -45,7 +47,6 @@ header, .search, footer {
 }
 
 /*search*/
-
 
 .inputBox {
   flex-direction: column;
@@ -153,6 +154,8 @@ footer {
 
 @media (min-width: 25em) {
 
+  /*search*/
+
   form {
     flex-direction: row;
     align-items: flex-end;
@@ -162,6 +165,12 @@ footer {
     margin-top: 0;
     margin-left: 5px;
   }
+  
+  .searchResults.noNominations {
+    width: calc(100% - 60px)!important;
+  }
+
+  /*nominations*/
 
   .nomination {
     flex-direction: row;
@@ -170,11 +179,6 @@ footer {
   .nomination > div {
     margin-left: 30px;
     width: calc(50% - 60px);
-  }
-
-  
-  .searchResults.noNominations {
-    width: calc(100% - 60px)!important;
   }
 
   .nominees.noNominations {
