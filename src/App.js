@@ -162,7 +162,7 @@ function App() {
         <div className="nomination">
           <div className="searchResults">
             {
-              !searchString && nominees.length >= 1 || searchString === ""
+              (!searchString && nominees.length >= 1) || searchString === ""
               ? <h2>Search for a movie you'd like to nominate!</h2>
               : errorMsg || !searchString 
               ? <h2>Hmmm.. looks like your search had no results. Try searching a different movie title!</h2> 
