@@ -26,7 +26,7 @@ function App() {
   const [errorMsg, setErrorMsg] = useState(false);
 
   const getMovies = (searchInput) => {
-      const url = new URL(`http://www.omdbapi.com/`);
+      const url = new URL(`https://www.omdbapi.com/`);
       url.search = new URLSearchParams({
         apikey: "defd63df",
         s: searchInput,
@@ -230,6 +230,9 @@ function App() {
           </div>          
         </div>
       </main>
+      <footer>
+        <p>Created by Mandy Poon for Shopify's UX Developer Intern Challenge, Fall 2021</p>
+      </footer>
     </div>
   );
 }  
