@@ -1,7 +1,7 @@
 import ReactModal from "react-modal";
 import {useState, useEffect} from 'react';
-import Search from './components/Search';
-import List from './components/List';
+import Search from './Components/Search';
+import List from './Components/List';
 
 function App() {
 
@@ -97,7 +97,7 @@ function App() {
     setNewSearch(false);
    }
 
-  //helper function to filter for unique API results; array passed is directly from api results
+  //helper function to filter for unique API results; array passed is of api results
   const getUnique = (array) => {
 
     const movieIDs = []
