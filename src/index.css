@@ -64,7 +64,7 @@ label {
   margin: 30px;
 }
 
-.nomination  h2 {
+.nomination  h3 {
   text-align: center;
 }
 
@@ -151,7 +151,7 @@ footer {
   border-top: 1px solid darkgray;
 }
 
-@media (min-width: 20em) {
+@media (min-width: 25em) {
 
   form {
     flex-direction: row;

@@ -148,8 +148,8 @@ function App() {
   return (
     <div className="wrapper">
       <header>
-        <h1>Nominate Movies!</h1>
-        <p>Nominate up to five movies for the Amazing Movie Award!</p>
+        <h1>The Shoppies - Movie Awards for Entrepreneurs</h1>
+        <h2>Nominate up to five movies!</h2>
       </header>
       <main>
         <div className="search">
@@ -163,10 +163,10 @@ function App() {
           <div className="searchResults">
             {
               (!searchString && nominees.length >= 1) || searchString === ""
-              ? <h2>Search for a movie you'd like to nominate!</h2>
+              ? <h3>Search for a movie you'd like to nominate!</h3>
               : errorMsg || !searchString 
-              ? <h2>Hmmm.. looks like your search had no results. Try searching a different movie title!</h2> 
-              : <h2>Search results for "{searchString}"</h2>
+              ? <h3>Hmmm.. looks like your search had no results. Try searching a different movie title!</h3> 
+              : <h3>Search results for "{searchString}"</h3>
             }
             
             <ul>
@@ -190,15 +190,15 @@ function App() {
               (errorMsg || !searchString) && nominees.length < 1 
               ? null 
               : nominees.length === 1 
-              ? <h2>You've nominated {nominees.length} movie:</h2> 
+              ? <h3>You've nominated {nominees.length} movie:</h3> 
               : nominees.length > 1 && nominees.length < 5 
-              ? <h2>You've nominated {nominees.length} movies:</h2> 
+              ? <h3>You've nominated {nominees.length} movies:</h3> 
               : nominees.length === 5 
               ? <div>
-                  <h2>You've nominated 5 movies:</h2> 
+                  <h3>You've nominated 5 movies:</h3> 
                   <p><em>Tip: to keep nominating, you'll have to remove at least one movie from your nominations list.</em></p>
                 </div>
-              : <h2>You've nominated 0 movies</h2>
+              : <h3>You've nominated 0 movies</h3>
             }
             
             <ul>
