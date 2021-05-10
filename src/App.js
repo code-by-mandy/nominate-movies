@@ -1,10 +1,16 @@
 import ReactModal from "react-modal";
 import {useState, useEffect} from 'react';
-import Search from './Search';
-import List from './List';
+import Search from './Components/Search';
+import List from './Components/List';
 
 function App() {
-  
+
+  //change tab title
+   useEffect (() => {
+     document.title="Nominate Movies"
+   }, [])  
+
+
   //states for search string and whether search form has been submitted 
   const [searchString, setSearchString] = useState("");
   const [newSearch, setNewSearch] = useState(false);
@@ -32,7 +38,7 @@ function App() {
         }).then(data => {
           const resultsRaw = data.Search;
           moviesButtonProp(getUnique(resultsRaw));
-        }).catch(error => {
+        }).catch(() => {
           setErrorMsg(true);
         })
   }
@@ -125,23 +131,42 @@ function App() {
   
   ReactModal.setAppElement('#root');
 
+  //media query
+  useEffect (() => {
+    const resultsBox = document.querySelector('.searchResults');
+    const nomineesBox = document.querySelector('.nominees');
+
+    if (nominees.length === 0) {
+      resultsBox.classList.add("noNominations");
+      nomineesBox.classList.add("noNominations");
+    } else {
+      resultsBox.classList.remove("noNominations");
+      nomineesBox.classList.remove("noNominations");
+    }
+  })
+
   return (
-    <div>
-      <h1>Nominate Movies!</h1>
-      <p>Nominate up to five movies for the Amazing Damazing Movie Award!</p>
-      <Search 
-        getSearchString = {(searchInput) => setSearchString(searchInput)} 
-        resetSearch = {searched}
-      />
-      <div className="nomination">
+    <div className="wrapper">
+      <header>
+        <h1>Nominate Movies!</h1>
+        <p>Nominate up to five movies for the Amazing Movie Award!</p>
+      </header>
+      <main>
+        <div className="search">
+          <p>To begin, search for a movie title:</p>
+          <Search 
+            getSearchString = {(searchInput) => setSearchString(searchInput)} 
+            resetSearch = {searched}
+          />
+        </div>
+        <div className="nomination">
           <div className="searchResults">
             {
-              !searchString ?
-              <h2>Search for a movie you'd like to nominate!</h2>
-              :
-              errorMsg ?
-              <h2>Hmmm.. looks like your search had no results. Try searching a different movie title!</h2> :
-              <h2>Search results for "{searchString}"</h2>
+              !searchString && nominees.length >= 1 || searchString === ""
+              ? <h2>Search for a movie you'd like to nominate!</h2>
+              : errorMsg || !searchString 
+              ? <h2>Hmmm.. looks like your search had no results. Try searching a different movie title!</h2> 
+              : <h2>Search results for "{searchString}"</h2>
             }
             
             <ul>
@@ -160,16 +185,20 @@ function App() {
                 )}
               </ul>
           </div>
-          <div className="nominees">
-            
+          <div className="nominees">            
             {
-              (errorMsg || !searchString) && nominees.length < 1 ?
-              null :
-              nominees.length === 1 ?
-              <h2>You've nominated {nominees.length} movie:</h2> :
-              nominees.length > 1 ?
-              <h2>You've nominated {nominees.length} movies:</h2> :
-              <h2>You've nominated 0 movies</h2>
+              (errorMsg || !searchString) && nominees.length < 1 
+              ? null 
+              : nominees.length === 1 
+              ? <h2>You've nominated {nominees.length} movie:</h2> 
+              : nominees.length > 1 && nominees.length < 5 
+              ? <h2>You've nominated {nominees.length} movies:</h2> 
+              : nominees.length === 5 
+              ? <div>
+                  <h2>You've nominated 5 movies:</h2> 
+                  <p><em>Tip: to keep nominating, you'll have to remove at least one movie from your nominations list.</em></p>
+                </div>
+              : <h2>You've nominated 0 movies</h2>
             }
             
             <ul>
@@ -187,21 +216,20 @@ function App() {
               )}
             </ul>
 
-              <ReactModal
-                isOpen={showModal}
-                aria={{
-                  labelledby: "heading",
-                  describedby: "full_description"
-                }}
-                onRequestClose={() => setCloseModal(true)}
-              >
-              <h1 id="heading">You've reached five nominees!</h1>
-              <p>To keep nominating, you'll have to remove at least one movie from your nominations list.</p>
-              <button onClick={() => setCloseModal(true)}>Close</button>
+            <ReactModal
+              isOpen={showModal}
+              contentLabel={"Thank you modal"}
+              onRequestClose={() => setCloseModal(true)}
+            >                
+              <div className="modalBody">
+                <h1>Thank you for nominating 5 movies!</h1>
+                <p>To keep nominating, you'll have to remove at least one movie from your nominations list.</p>
+                <button onClick={() => setCloseModal(true)}>Close</button>
+              </div>                
             </ReactModal> 
-            
-          </div>
-      </div>
+          </div>          
+        </div>
+      </main>
     </div>
   );
 }  
