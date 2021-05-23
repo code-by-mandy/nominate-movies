@@ -2,8 +2,9 @@ import ReactModal from "react-modal";
 import {useState, useEffect} from 'react';
 import Search from './components/Search';
 import List from './components/List';
+import PopUp from './components/PopUp'
 
-function App() {
+function App () {   
 
   //states for search string and whether search form has been submitted 
   const [searchString, setSearchString] = useState("");
@@ -58,7 +59,7 @@ function App() {
     setErrorMsg(false);
   }
 
-  //state for storing nominated movies
+  //array state for storing nominated movies
   const [nominees, setNominees] = useState([]);
 
   //nominate movie
@@ -105,18 +106,20 @@ function App() {
     return uniqueArray;
   } 
 
-  //pop up if nominees reach five
+  //pop up states
   const [showModal, setShowModal] = useState(false);
+  const [noPopUp, setNoPopUp] = useState(false);
+
 
   useEffect (() => {
-    if (nominees.length === 3) {
+    if (nominees.length === 3 && !noPopUp ) {
       setShowModal(true);
     }
-  }, [nominees])
+  }, [nominees, noPopUp])
   
   ReactModal.setAppElement('#root');
 
-  //media query
+  //media query for search results width at 0 nominations
   useEffect (() => {
     const resultsBox = document.querySelector('.searchResults');
     const nomineesBox = document.querySelector('.nominees');
@@ -131,7 +134,7 @@ function App() {
   })
 
   return (
-    <div className="wrapper">
+    <div className='wrapper'>
       <header>
         <h1>Saturday Night Nominations</h1>
         <h2>Nominate up to three movies to watch this weekend!</h2>
@@ -180,7 +183,7 @@ function App() {
               ? <h3>You've nominated {nominees.length} movies:</h3> 
               : nominees.length === 3 
               ? <div>
-                  <h3>You've nominated 3 movies:</h3> 
+                  <h3>You've nominated 3 movies!</h3> 
                 </div>
               : <h3>You've nominated 0 movies</h3>
             }
@@ -202,7 +205,7 @@ function App() {
 
             {
               nominees.length === 3 ?
-              <p className="tip"><em>Tip: to nominate a different movie, remove a movie!</em></p> :
+              <p className="tip"><em>Tip: to nominate a different movie, remove a movie.</em></p> :
               null
             }
             {/* Pop-up when number of nominees reach three */}
@@ -210,21 +213,19 @@ function App() {
               className="contentCSS"
               overlayClassName="overlayCSS"
               isOpen={showModal}
-              contentLabel={"Thank you modal"}
+              contentLabel={"You're all set pop up"}
               onRequestClose={() => setShowModal(false)}              
             >                
-              <div className="modalBody">
-                <h1>You're all set for Saturday night!</h1>
-                <p>Happy watching!</p>
-                <p>To nominate a different movie, remove a movie from your nominations list.</p>
-                <button className="close" onClick={() => setShowModal(false)}>Close</button>
-              </div>                
+              <PopUp 
+                close={() => setShowModal(false)} 
+                noPopUp={() => setNoPopUp(true)}
+              />         
             </ReactModal> 
           </div>          
         </div>
       </main>
       <footer>
-        <p>Mandy Poon &#169; 2021 | <a href="https://github.com/code-by-mandy/nominate-movies">Github repository</a></p>
+        <p>Mandy Poon &#169; 2021 | <a href="https://github.com/code-by-mandy/nominate-movies">Github repository</a> | Inspired by a tech challenge</p>
       </footer>
     </div>
   );

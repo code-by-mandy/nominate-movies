@@ -23,15 +23,15 @@ html {
   margin: 0 auto;
 }
 
-.nomination, .modalBody, li, form, header, .search, form, .buttonBox, .inputBox {
+.nomination, .modalBody, li, form[name=search], header, .search, .buttonBox, .inputBox, .popUpPreference {
   display: flex;
 }
 
-.nomination, .modalBody, li, form, header, .search {
+.nomination, .modalBody, li, form[name=search], header, .search {
   flex-direction: column;  
 }
 
-.modalBody, li, form, header, .search, .buttonBox {
+.modalBody, li, form[name=search], header, .search, .buttonBox {
   justify-content: center;
 }
 
@@ -52,7 +52,7 @@ header, .search, footer {
   align-items: flex-start;
 }
 
-label {
+label:not(.noPopUpLabel) {
   font-size: 0.9em;
   margin-bottom: 5px;
 }
@@ -103,7 +103,7 @@ button {
 }
 
 
-button:hover, button:focus {
+button:hover {
   background-color: black;
   color: white;
   transition: ease 0.2s;
@@ -147,9 +147,8 @@ button:-moz-focusring,[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[
 
 .contentCSS {
   width: 90%;
-  height: 90%;
   position: relative;
-  margin: 60px auto;
+  margin: 30px auto;
   background-color: #FFFFFF;
   border: 1px solid #CCC;
   border-radius: 8px;
@@ -167,6 +166,19 @@ button:-moz-focusring,[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[
   height: 100%;
 }
 
+.popUpPreference {
+  font-size: 0.8em;
+  align-items: center;
+  margin-top: 30px;
+  background-color: #CCC;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.noPopUpLabel {
+  margin-right: 5px;
+}
+
 /*footer*/
 
 footer {
@@ -177,12 +189,12 @@ footer {
 
   /*search*/
 
-  form {
+  form[name=search] {
     flex-direction: row;
     align-items: flex-end;
   }
 
-  form button {
+  form[name=search] button {
     margin-top: 0;
     margin-left: 5px;
   }
@@ -214,6 +226,6 @@ footer {
   .contentCSS {
     width: 66%;
     height: 66%;
+    margin: 60px auto;
   }
-
 }
