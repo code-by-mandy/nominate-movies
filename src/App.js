@@ -1,7 +1,7 @@
 import ReactModal from "react-modal";
 import {useState, useEffect} from 'react';
-import Search from './omponents/Search';
-import List from './omponents/List';
+import Search from './components/Search';
+import List from './components/List';
 
 function App() {
 
