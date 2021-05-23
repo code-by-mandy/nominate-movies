@@ -1,15 +1,9 @@
 import ReactModal from "react-modal";
 import {useState, useEffect} from 'react';
-import Search from './Components/Search';
-import List from './Components/List';
+import Search from './omponents/Search';
+import List from './omponents/List';
 
 function App() {
-
-  //change tab title
-   useEffect (() => {
-     document.title="Nominate Movies"
-   }, [])  
-
 
   //states for search string and whether search form has been submitted 
   const [searchString, setSearchString] = useState("");
@@ -54,7 +48,7 @@ function App() {
           item.nominated = true;
         } 
       })
-      if (item.nominated || nominees.length === 5) {
+      if (item.nominated || nominees.length === 3) {
         item.disabled=true;
       } else {
         item.disabled=false;
@@ -113,15 +107,12 @@ function App() {
 
   //pop up if nominees reach five
   const [showModal, setShowModal] = useState(false);
-  const [closeModal, setCloseModal] = useState(false);
 
   useEffect (() => {
-    if (nominees.length === 5 && !closeModal) {
+    if (nominees.length === 3) {
       setShowModal(true);
-    } else if (nominees.length === 5 && closeModal) {
-      setShowModal(false);
     }
-  }, [nominees, closeModal])
+  }, [nominees])
   
   ReactModal.setAppElement('#root');
 
@@ -142,8 +133,8 @@ function App() {
   return (
     <div className="wrapper">
       <header>
-        <h1>The Shoppies - Movie Awards for Entrepreneurs</h1>
-        <h2>Nominate up to five movies!</h2>
+        <h1>Saturday Night Nominations</h1>
+        <h2>Nominate up to three movies to watch this weekend!</h2>
       </header>
       <main>
         <div className="search">
@@ -185,12 +176,11 @@ function App() {
               ? null 
               : nominees.length === 1 
               ? <h3>You've nominated {nominees.length} movie:</h3> 
-              : nominees.length > 1 && nominees.length < 5 
+              : nominees.length > 1 && nominees.length < 3 
               ? <h3>You've nominated {nominees.length} movies:</h3> 
-              : nominees.length === 5 
+              : nominees.length === 3 
               ? <div>
-                  <h3>You've nominated 5 movies:</h3> 
-                  <p><em>Tip: to keep nominating, you'll have to remove at least one movie from your nominations list.</em></p>
+                  <h3>You've nominated 3 movies:</h3> 
                 </div>
               : <h3>You've nominated 0 movies</h3>
             }
@@ -209,24 +199,32 @@ function App() {
                   }
               )}
             </ul>
-            {/* Pop-up when number of nominees reach five */}
-            <ReactModal
+
+            {
+              nominees.length === 3 ?
+              <p className="tip"><em>Tip: to nominate a different movie, remove a movie!</em></p> :
+              null
+            }
+            {/* Pop-up when number of nominees reach three */}
+            <ReactModal 
+              className="contentCSS"
+              overlayClassName="overlayCSS"
               isOpen={showModal}
               contentLabel={"Thank you modal"}
-              onRequestClose={() => setCloseModal(true)}
+              onRequestClose={() => setShowModal(false)}              
             >                
               <div className="modalBody">
-                <h1>Thank you for nominating 5 movies!</h1>
-                <p>To keep nominating, you'll have to remove at least one movie from your nominations list.</p>
-                <button onClick={() => setCloseModal(true)}>Close</button>
+                <h1>You're all set for Saturday night!</h1>
+                <p>Happy watching!</p>
+                <p>To nominate a different movie, remove a movie from your nominations list.</p>
+                <button className="close" onClick={() => setShowModal(false)}>Close</button>
               </div>                
             </ReactModal> 
           </div>          
         </div>
       </main>
       <footer>
-        <p>Created by Mandy Poon &#169; 2021</p>
-        <p><a href="https://github.com/code-by-mandy/nominate-movies">Github repository</a></p>
+        <p>Mandy Poon &#169; 2021 | <a href="https://github.com/code-by-mandy/nominate-movies">Github repository</a></p>
       </footer>
     </div>
   );

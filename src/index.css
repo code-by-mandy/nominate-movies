@@ -11,11 +11,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 html {
   line-height:1.15;
   -ms-text-size-adjust:100%;
@@ -43,6 +38,10 @@ html {
 header, .search, footer {
   margin: 30px;
   align-items: center;
+  text-align: center;
+}
+
+.modalBody h1, .modalBody p, .tip {
   text-align: center;
 }
 
@@ -107,7 +106,7 @@ button {
 button:hover, button:focus {
   background-color: black;
   color: white;
-  transition: ease 0.5s;
+  transition: ease 0.2s;
   cursor: pointer;
 }
 
@@ -144,6 +143,28 @@ button:-moz-focusring,[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[
 
 .modalBody {
   align-items: center;
+}
+
+.contentCSS {
+  width: 90%;
+  height: 90%;
+  position: relative;
+  margin: 60px auto;
+  background-color: #FFFFFF;
+  border: 1px solid #CCC;
+  border-radius: 8px;
+  padding: 30px;
+}
+
+.overlayCSS {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.75);
+  width: 100%;
+  height: 100%;
 }
 
 /*footer*/
@@ -187,6 +208,12 @@ footer {
 
   .nomination > div:last-child {
     margin-right: 30px;
+  }
+
+  /*modal*/
+  .contentCSS {
+    width: 66%;
+    height: 66%;
   }
 
 }
